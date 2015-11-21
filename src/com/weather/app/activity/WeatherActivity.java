@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.weather.app.R;
+import com.weather.app.service.AutoUpdateService;
 import com.weather.app.util.HttpCallbackListener;
 import com.weather.app.util.HttpUtil;
 import com.weather.app.util.Utility;
@@ -73,7 +74,7 @@ public class WeatherActivity extends Activity implements OnClickListener{
 			SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(this);
 			String weatherCode=prefs.getString("weather_code", "");
 			if(!TextUtils.isEmpty(weatherCode)){
-				queryWeatherCode(weatherCode);
+				queryWeatherInfo(weatherCode);
 			}
 			break;
 			default :
@@ -149,10 +150,13 @@ public class WeatherActivity extends Activity implements OnClickListener{
 		temp1Text.setText(prefs.getString("temp1", ""));
 		temp2Text.setText(prefs.getString("temp2", ""));
 		weatherDespText.setText(prefs.getString("weather_desp", ""));
-		publishText.setText(prefs.getString("今天"+"publish_time", "")+"发布");
+		publishText.setText("今天"+prefs.getString("publish_time","")+"发布");
 		currentDateText.setText(prefs.getString("current_date", ""));
 		weatherInfoLayout.setVisibility(View.VISIBLE);
 		cityNameText.setVisibility(View.VISIBLE);
+		
+		Intent intent =new Intent(this,AutoUpdateService.class);
+		startService(intent);
 	}
 
 }
